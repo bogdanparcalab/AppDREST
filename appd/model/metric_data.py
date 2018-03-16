@@ -7,6 +7,7 @@ Model classes for AppDynamics REST API
 from . import JsonObject, JsonList
 from .metric_value import MetricValues
 
+
 class MetricDataSingle(JsonObject):
 
     FIELDS = {
@@ -55,3 +56,6 @@ class MetricData(JsonList):
 
     def first_value(self):
         return self[0].values[0].value
+
+    def sum_value(self):
+        return self[0].values[0].sum

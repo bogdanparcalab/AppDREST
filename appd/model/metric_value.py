@@ -7,6 +7,7 @@ Model classes for AppDynamics REST API
 from . import JsonObject, JsonList
 from appd.time import from_ts
 
+
 class MetricValue(JsonObject):
 
     FIELDS = {
@@ -14,12 +15,13 @@ class MetricValue(JsonObject):
         'min': '',
         'max': '',
         'value': '',
+        'sum': '',
         'start_time_ms': 'startTimeInMillis'
     }
 
     def __init__(self, current=0, value=0, min_value=0, max_value=0, start_time_ms=0):
-        (self.current, self.value, self.min, self.max, self.start_time_ms) = (current, value, min_value, max_value,
-                                                                              start_time_ms)
+        (self.current, self.value, self.sum, self.min, self.max, self.start_time_ms) = (current, value, sum, min_value, max_value,
+                                                                                        start_time_ms)
 
     @property
     def start_time(self):

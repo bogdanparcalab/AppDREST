@@ -30,14 +30,16 @@ class AppDynamicsClient(object):
     and parse responses.
     """
 
-    TIME_RANGE_TYPES = ('BEFORE_NOW', 'BEFORE_TIME', 'AFTER_TIME', 'BETWEEN_TIMES')
+    TIME_RANGE_TYPES = ('BEFORE_NOW', 'BEFORE_TIME',
+                        'AFTER_TIME', 'BETWEEN_TIMES')
 
     DEEP_DIVE_POLICIES = ('SLA_FAILURE', 'TIME_SAMPLING', 'ERROR_SAMPLING', 'OCCURRENCE_SAMPLING',
                           'ON_DEMAND', 'HOTSPOT', 'HOTSPOT_LEARN', 'APPLICATION_STARTUP', 'DIAGNOSTIC_SESSION',
                           'SLOW_DIAGNOSTIC_SESSION', 'ERROR_DIAGNOSTIC_SESSION', 'POLICY_FAILURE_DIAGNOSTIC_SESSION',
                           'INFLIGHT_SLOW_SESSION')
 
-    USER_EXPERIENCES = ('NORMAL', 'SLOW', 'VERY_SLOW', 'STALL', 'BUSINESS_ERROR')
+    USER_EXPERIENCES = ('NORMAL', 'SLOW', 'VERY_SLOW',
+                        'STALL', 'BUSINESS_ERROR')
 
     COLLECTOR_TYPES = ('ERROR_IDS', 'STACK_TRACES', 'ERROR_DETAIL', 'HTTP_PARAMETER', 'BUSINESS_DATA',
                        'COOKIE', 'HTTP_HEADER', 'SESSION_KEY', 'RESPONSE_HEADER', 'LOG_MESSAGE',
@@ -62,6 +64,17 @@ class AppDynamicsClient(object):
     EPM = ERRORS_PER_MINUTE = 'Errors per Minute'
     EXCEPTIONS_PER_MINUTE = 'Exceptions per Minute'
     STALLS = 'Stall Count'
+
+    FIRST_BYTE_TIME = 'First Byte Time (ms)'
+    DOM_READY_TIME = 'DOM Ready Time (ms)'
+    END_USER_RESPONSE_TIME = 'End User Response Time (ms)'
+    REQUESTS_PER_MINUTE = 'Requests per Minute'
+
+    HWD_CPU_BUSY = '%Busy'
+    HWD_MEM_USED = 'Used (MB)'
+
+    NODE_ART = 'Average Response Time (ms)'
+    NODE_CPM = 'Calls per Minute'
 
     def __init__(self, base_url='http://localhost:8090', username='user1', password='welcome',
                  account='customer1', debug=False):
@@ -165,7 +178,8 @@ class AppDynamicsClient(object):
         return r.json() if json else r.text
 
     def _app_path(self, app_id, path=None):
-        app_id = app_id if isinstance(app_id, int) or isinstance(app_id, str) else self._app_id
+        app_id = app_id if isinstance(app_id, int) or isinstance(
+            app_id, str) else self._app_id
         if not app_id:
             raise ValueError('application id is required')
         path = '/controller/rest/applications/%s' % app_id + (path or '')
@@ -185,7 +199,8 @@ class AppDynamicsClient(object):
         """
         parent = None
         if metric_path:
-            parent = MetricTreeNode(parent=None, node_name=metric_path, node_type='folder')
+            parent = MetricTreeNode(
+                parent=None, node_name=metric_path, node_type='folder')
         return self._get_metric_tree(app_id, parent=parent, recurse=recurse)
 
     def _get_metric_tree(self, app_id=None, parent=None, recurse=False):
@@ -280,7 +295,6 @@ class AppDynamicsClient(object):
         return self._app_request(Node, '/nodes/%s' % node_id, app_id)
 
     def _validate_time_range(self, time_range_type, duration_in_mins, start_time, end_time):
-
         """
         Validates the combination of parameters used to specify a time range in AppDynamics.
 
@@ -292,19 +306,24 @@ class AppDynamicsClient(object):
         :rtype: dict
         """
         if time_range_type and not time_range_type in self.TIME_RANGE_TYPES:
-            raise ValueError('time_range_time must be one of: ' + ', '.join(self.TIME_RANGE_TYPES))
+            raise ValueError('time_range_time must be one of: ' +
+                             ', '.join(self.TIME_RANGE_TYPES))
 
         elif time_range_type == 'BEFORE_NOW' and not duration_in_mins:
-            raise ValueError('when using BEFORE_NOW, you must specify duration_in_mins')
+            raise ValueError(
+                'when using BEFORE_NOW, you must specify duration_in_mins')
 
         elif time_range_type == 'BEFORE_TIME' and (not end_time or not duration_in_mins):
-            raise ValueError('when using BEFORE_TIME, you must specify duration_in_mins and end_time')
+            raise ValueError(
+                'when using BEFORE_TIME, you must specify duration_in_mins and end_time')
 
         elif time_range_type == 'AFTER_TIME' and (not start_time or not duration_in_mins):
-            raise ValueError('when using AFTER_TIME, you must specify duration_in_mins and start_time')
+            raise ValueError(
+                'when using AFTER_TIME, you must specify duration_in_mins and start_time')
 
         elif time_range_type == 'BETWEEN_TIMES' and (not start_time or not end_time):
-            raise ValueError('when using BETWEEN_TIMES, you must specify start_time and end_time')
+            raise ValueError(
+                'when using BETWEEN_TIMES, you must specify start_time and end_time')
 
         return {'time-range-type': time_range_type,
                 'duration-in-mins': duration_in_mins,
@@ -335,7 +354,8 @@ class AppDynamicsClient(object):
         :rtype: appd.model.MetricData
         """
 
-        params = self._validate_time_range(time_range_type, duration_in_mins, start_time, end_time)
+        params = self._validate_time_range(
+            time_range_type, duration_in_mins, start_time, end_time)
         params.update({'metric-path': metric_path,
                        'rollup': rollup})
 
@@ -364,9 +384,11 @@ class AppDynamicsClient(object):
         :rtype: appd.model.Snapshots
         """
 
-        self._validate_time_range(time_range_type, duration_in_mins, start_time, end_time)
+        self._validate_time_range(
+            time_range_type, duration_in_mins, start_time, end_time)
 
-        params = self._validate_time_range(time_range_type, duration_in_mins, start_time, end_time)
+        params = self._validate_time_range(
+            time_range_type, duration_in_mins, start_time, end_time)
 
         for qs_name in self.SNAPSHOT_REQUEST_PARAMS:
             arg_name = qs_name.replace('-', '_')
@@ -397,7 +419,8 @@ class AppDynamicsClient(object):
         :rtype: appd.model.PolicyViolations
         """
 
-        params = self._validate_time_range(time_range_type, duration_in_mins, start_time, end_time)
+        params = self._validate_time_range(
+            time_range_type, duration_in_mins, start_time, end_time)
 
         return self._app_request(PolicyViolations, '/problems/policy-violations', app_id, params)
 
@@ -422,7 +445,8 @@ class AppDynamicsClient(object):
         :rtype: appd.model.PolicyViolations
         """
 
-        params = self._validate_time_range(time_range_type, duration_in_mins, start_time, end_time)
+        params = self._validate_time_range(
+            time_range_type, duration_in_mins, start_time, end_time)
 
         return self._app_request(PolicyViolations, '/problems/healthrule-violations', app_id, params)
 
@@ -483,4 +507,3 @@ class AppDynamicsClient(object):
             'enddate': end_time.isoformat() if end_time else None
         }
         return self._v2_request(LicenseUsages, '/accounts/{0}/licensemodules/usages'.format(account_id), params)
-
