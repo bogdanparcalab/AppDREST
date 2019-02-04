@@ -15,12 +15,12 @@ Released: 23-Jun-2015
 Introduction
 ------------
 
-AppDynamicsREST is a library that provides a clean Python interface to the
+AppDREST is a library that provides a clean Python interface to the
 REST API of an AppDynamics controller.
 
-AppDynamicsREST is developed using Python 2.7.6 on Mac OSX. It is known to
+AppDREST is developed using Python 3.7.2 on Windows 10. It is known to
 work on most Linux distributions and on Windows, with your choice of Python 2.6, 2.7,
-3.3, or 3.4.
+3.3, 3.4 or 3.7.
 
 
 Installation
@@ -28,12 +28,12 @@ Installation
 
 Install via ``pip``::
 
-    $ pip install AppDynamicsREST
+    $ pip install AppDREST
 
 Install from source::
 
-    $ git clone git://github.com/tradel/AppDynamicsREST.git
-    $ cd AppDynamicsREST
+    $ git clone git://github.com/tradel/AppDREST.git
+    $ cd AppDREST
     $ python setup.py install
 
 

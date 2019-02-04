@@ -71,7 +71,9 @@ class AppDynamicsClient(object):
     REQUESTS_PER_MINUTE = 'Requests per Minute'
 
     HWD_CPU_BUSY = '%Busy'
+    IIS_CPU_PERCENT = 'CPU%'
     HWD_MEM_USED = 'Used (MB)'
+    IIS_WORKING_SET = 'Working Set'
 
     NODE_ART = 'Average Response Time (ms)'
     NODE_CPM = 'Calls per Minute'
