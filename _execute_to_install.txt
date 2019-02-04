@@ -1,0 +1,2 @@
+py -3 setup.py bdist_egg
+py -3 setup.py install
