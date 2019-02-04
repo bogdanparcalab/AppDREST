@@ -1,6 +1,6 @@
-============================
-AppDynamics REST API Library
-============================
+=======================================
+AppDRest - AppDynamics REST API Library
+=======================================
 
 Current version: 0.4.5
 Released: 23-Jun-2015
